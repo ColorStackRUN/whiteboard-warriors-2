@@ -20,6 +20,8 @@
 
 The workshop's worked example is now a runnable, browser-based teaching demo in [`demo/`](demo/). It uses the deck's blue visual direction and shows a moving request traveling between a website, backend, database, and photo storage.
 
+**[Open the hosted workshop demo](https://colorstackrun.github.io/whiteboard-warriors-2/)** — no installation or sign-in required. The animation and sample app run on any supported browser, but each browser keeps its own demo data.
+
 ### Run it
 
 Install Node.js 20 or newer. No packages, account, or API keys are required.
@@ -50,7 +52,11 @@ Use Pause and Next step to set the pace. Less motion is available, and the demo 
 - Sample students, items, locations, and illustrations are fictional teaching data. Do not upload sensitive photos or use the demo to report actual lost property.
 - Uploads accept PNG, JPEG, and WebP up to 2 MB. Browser storage limits may prevent large or numerous uploads. A failed save leaves the prior model unchanged.
 
-The static files can also be served from any static host, including GitHub Pages. Hosting is not automatically enabled by this change. The repository includes dependency-free model tests. The movie-booking challenge remains unsolved here so teams can design it themselves.
+### Hosting
+
+The public demo is hosted on GitHub Pages from the root of this repository's `gh-pages` branch. That branch contains a published snapshot of `demo/`, an empty `.nojekyll` file, and `build-info.json` identifying the source commit. The source code and tests stay in the normal development branch. To publish future app updates, refresh the files in `gh-pages` from the tested `demo/` source. Updating the source branch alone does not update the hosted snapshot.
+
+The repository includes dependency-free model tests. The movie-booking challenge remains unsolved here so teams can design it themselves.
 
 ---
 
