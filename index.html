@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#081c34" />
+    <meta
+      name="description"
+      content="An animated campus lost-and-found system design teaching demo for Whiteboard Warriors #2."
+    />
+    <title>Campus lost-and-found · Whiteboard Warriors #2</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top"
+        ><span class="brand-mark" aria-hidden="true">CS</span
+        ><span>ColorStack <small>Rutgers–Newark</small></span></a
+      >
+      <span class="workshop-label">WHITEBOARD WARRIORS <span>#2</span></span>
+      <a
+        class="repo-link"
+        href="https://github.com/ColorStackRUN/whiteboard-warriors-2"
+        >View the code <span aria-hidden="true">↗</span></a
+      >
+    </header>
+    <main id="top">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">THE CAMPUS LOST-AND-FOUND EXAMPLE</p>
+          <h1 id="page-title">
+            One backpack.<br /><span>Four moving parts.</span>
+          </h1>
+        </div>
+        <div class="intro-copy">
+          <p>
+            Follow a found item from a student’s screen to a saved record, then
+            back to someone looking for it.
+          </p>
+          <p class="simulation-label">
+            <span aria-hidden="true"></span>Teaching simulator. All components
+            run in this browser.
+          </p>
+        </div>
+      </section>
+
+      <section class="walkthrough" aria-label="Animated system walkthrough">
+        <div class="walkthrough-heading">
+          <div class="scenarios" role="group" aria-label="Walkthrough scenario">
+            <button
+              class="scenario active"
+              data-scenario="post"
+              aria-pressed="true"
+            >
+              <span>01</span> Post an item
+            </button>
+            <button
+              class="scenario"
+              data-scenario="search"
+              aria-pressed="false"
+            >
+              <span>02</span> Find it
+            </button>
+            <button
+              class="scenario"
+              data-scenario="permission"
+              aria-pressed="false"
+            >
+              <span>03</span> Who can edit?
+            </button>
+          </div>
+          <label class="motion-toggle"
+            ><input id="reduce-motion" type="checkbox" /> Less motion</label
+          >
+        </div>
+        <div class="system-layout">
+          <div class="architecture">
+            <svg
+              class="system-map"
+              viewBox="0 0 820 490"
+              role="img"
+              aria-labelledby="map-title map-desc"
+            >
+              <title id="map-title">Campus lost-and-found architecture</title>
+              <desc id="map-desc">
+                Website communicates with backend through an API. Backend reads
+                and writes database records and stores photos in file storage.
+                The animated packet traces the currently selected action.
+              </desc>
+              <defs>
+                <pattern
+                  id="dots"
+                  width="22"
+                  height="22"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <circle cx="1" cy="1" r="1" fill="#244661" />
+                </pattern>
+                <marker
+                  id="arrow"
+                  markerWidth="6"
+                  markerHeight="6"
+                  refX="5"
+                  refY="3"
+                  orient="auto"
+                >
+                  <path
+                    d="M0 0 6 3 0 6"
+                    fill="none"
+                    stroke="#5c83a6"
+                    stroke-width="1.2"
+                  />
+                </marker>
+                <filter id="packet-glow">
+                  <feGaussianBlur stdDeviation="3" />
+                </filter>
+              </defs>
+              <rect width="820" height="490" fill="url(#dots)" />
+              <g
+                class="connections"
+                fill="none"
+                stroke="#5c83a6"
+                stroke-width="2"
+                marker-end="url(#arrow)"
+              >
+                <path id="edge-request" d="M218 167H335" />
+                <path id="edge-response" d="M335 193H218" />
+                <path id="edge-record-write" d="M463 167H611" />
+                <path id="edge-record-read" d="M611 193H463" />
+                <path id="edge-photo-write" d="M424 240V367H611" />
+                <path id="edge-photo-read" d="M611 391H398V240" />
+              </g>
+              <g
+                class="edge-labels"
+                fill="#b5cadf"
+                font-size="13"
+                text-anchor="middle"
+              >
+                <text x="277" y="149">API request</text>
+                <text x="277" y="219">API response</text>
+                <text x="537" y="149">Write / query</text>
+                <text x="537" y="219">Records</text>
+                <text x="502" y="352">Save / look up photos</text>
+                <text x="502" y="415">Photo references / files</text>
+              </g>
+              <g id="node-website" class="system-node" data-node="website">
+                <rect
+                  class="node-halo"
+                  x="61"
+                  y="97"
+                  width="167"
+                  height="163"
+                  rx="25"
+                />
+                <text class="node-number" x="72" y="55">01</text>
+                <text class="node-title" x="105" y="55">Website</text>
+                <rect
+                  x="72"
+                  y="110"
+                  width="146"
+                  height="126"
+                  rx="12"
+                  fill="#deefff"
+                  stroke="#75bcf8"
+                  stroke-width="3"
+                />
+                <path d="M72 138H218" stroke="#75bcf8" stroke-width="2" />
+                <circle cx="85" cy="124" r="3" fill="#1770b7" />
+                <circle cx="96" cy="124" r="3" fill="#ffb85a" />
+                <circle cx="107" cy="124" r="3" fill="#58b89a" />
+                <rect
+                  x="85"
+                  y="151"
+                  width="49"
+                  height="59"
+                  rx="5"
+                  fill="#88c9fb"
+                />
+                <path
+                  d="M102 162v-3c0-8 14-8 14 0v3m-20 9q0-9 9-9h8q10 0 10 9v22H96z"
+                  fill="#2a82cf"
+                  stroke="#18598f"
+                  stroke-width="2"
+                />
+                <path d="M102 180h15" stroke="#d6f2ff" stroke-width="2" />
+                <path
+                  d="M145 157h57m-57 12h42m-42 12h50"
+                  stroke="#52789c"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                />
+                <rect
+                  x="145"
+                  y="194"
+                  width="47"
+                  height="17"
+                  rx="4"
+                  fill="#1e73b4"
+                />
+                <text
+                  class="node-subtitle"
+                  x="145"
+                  y="278"
+                  text-anchor="middle"
+                >
+                  Collect + display
+                </text>
+              </g>
+              <g id="node-backend" class="system-node" data-node="backend">
+                <rect
+                  class="node-halo"
+                  x="326"
+                  y="97"
+                  width="149"
+                  height="163"
+                  rx="25"
+                />
+                <text class="node-number" x="327" y="55">02</text>
+                <text class="node-title" x="360" y="55">Backend</text>
+                <g fill="#2587d4" stroke="#9ad9ff" stroke-width="3">
+                  <rect x="340" y="111" width="120" height="36" rx="7" />
+                  <rect x="340" y="156" width="120" height="36" rx="7" />
+                  <rect x="340" y="201" width="120" height="36" rx="7" />
+                </g>
+                <g fill="#ddf5ff">
+                  <circle cx="355" cy="129" r="4" />
+                  <circle cx="355" cy="174" r="4" />
+                  <circle cx="355" cy="219" r="4" />
+                </g>
+                <g stroke="#124b77" stroke-width="5" stroke-linecap="round">
+                  <path d="M383 129h60" />
+                  <path d="M383 174h60" />
+                  <path d="M383 219h60" />
+                </g>
+                <text
+                  class="node-subtitle"
+                  x="400"
+                  y="278"
+                  text-anchor="middle"
+                >
+                  Validate + enforce rules
+                </text>
+              </g>
+              <g id="node-database" class="system-node" data-node="database">
+                <rect
+                  class="node-halo"
+                  x="596"
+                  y="97"
+                  width="145"
+                  height="163"
+                  rx="25"
+                />
+                <text class="node-number" x="600" y="55">03</text>
+                <text class="node-title" x="633" y="55">Database</text>
+                <path
+                  d="M612 129v88c0 29 115 29 115 0v-88"
+                  fill="#419edf"
+                  stroke="#c7edff"
+                  stroke-width="3"
+                />
+                <ellipse
+                  cx="669.5"
+                  cy="129"
+                  rx="57.5"
+                  ry="19"
+                  fill="#8fd6fc"
+                  stroke="#c7edff"
+                  stroke-width="3"
+                />
+                <path
+                  d="M612 159c0 29 115 29 115 0m-115 30c0 29 115 29 115 0"
+                  fill="none"
+                  stroke="#c7edff"
+                  stroke-width="3"
+                />
+                <text
+                  class="node-subtitle"
+                  x="670"
+                  y="278"
+                  text-anchor="middle"
+                >
+                  Listing records
+                </text>
+              </g>
+              <g id="node-storage" class="system-node" data-node="storage">
+                <rect
+                  class="node-halo"
+                  x="596"
+                  y="316"
+                  width="145"
+                  height="109"
+                  rx="25"
+                />
+                <path
+                  d="M613 348v-14h40l13 14h61v63H613z"
+                  fill="#2789d5"
+                  stroke="#bce9ff"
+                  stroke-width="3"
+                />
+                <path
+                  d="M607 357h127l-10 54H614z"
+                  fill="#73c4f4"
+                  stroke="#bce9ff"
+                  stroke-width="3"
+                />
+                <rect
+                  x="640"
+                  y="368"
+                  width="42"
+                  height="33"
+                  rx="3"
+                  fill="#eefaff"
+                />
+                <circle cx="669" cy="376" r="4" fill="#6ca7cc" />
+                <path d="m645 394 11-12 8 8 7-6 7 10" fill="#4188b7" />
+                <text class="node-number" x="601" y="462">04</text>
+                <text class="node-title" x="635" y="462">File storage</text>
+              </g>
+              <g id="packet" visibility="hidden">
+                <circle
+                  r="13"
+                  fill="#6ee7ff"
+                  opacity=".4"
+                  filter="url(#packet-glow)"
+                />
+                <circle r="7" fill="#8defff" />
+                <circle r="2.5" fill="#fff" />
+              </g>
+              <g fill="#81a4c4" font-size="12">
+                <text x="72" y="343">Same responsibilities as the slide.</text>
+                <text x="72" y="362">
+                  The arrows explain the communication.
+                </text>
+                <text x="72" y="381">Extra boxes are optional.</text>
+              </g>
+            </svg>
+            <div class="map-caption">
+              <span id="map-status"
+                ><span class="status-dot"></span>Ready to trace a request</span
+              ><span>Logical components, not four required machines</span>
+            </div>
+          </div>
+          <aside class="trace-panel" aria-label="Current step">
+            <p class="eyebrow">FOLLOW THE REQUEST</p>
+            <div class="step-counter">
+              <span id="step-number">01</span><span id="step-total">/ 07</span>
+            </div>
+            <span id="component-label" class="component-label">WEBSITE</span>
+            <h2 id="step-title" aria-live="polite" aria-atomic="true">
+              A student posts a found item
+            </h2>
+            <p id="step-detail">
+              The website collects a description and a photo. Press Play to see
+              where they go.
+            </p>
+            <div
+              id="trace-progress"
+              class="trace-progress"
+              aria-label="Walkthrough progress"
+            ></div>
+            <div class="playback-controls">
+              <button id="play" class="primary">
+                Play walkthrough <span aria-hidden="true">▶</span></button
+              ><button id="next" class="secondary">
+                Next step <span aria-hidden="true">→</span></button
+              ><button
+                id="restart"
+                class="icon-button"
+                aria-label="Restart walkthrough"
+              >
+                ↺
+              </button>
+            </div>
+            <p id="trace-message" class="trace-message" aria-live="polite">
+              No changes to the sample data during this walkthrough.
+            </p>
+          </aside>
+        </div>
+        <div class="decision">
+          <span class="decision-label">WHY THIS DESIGN?</span>
+          <p id="decision-copy">
+            The photo lives in file storage. The database keeps the listing
+            information and a reference to that photo.
+          </p>
+        </div>
+      </section>
+
+      <section class="try-section" aria-labelledby="try-title">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">NOW TRY IT YOURSELF</p>
+            <h2 id="try-title">A tiny app, with the flow exposed.</h2>
+            <p>Sample items and students only. Changes stay in this browser.</p>
+          </div>
+          <button id="open-post" class="primary">+ Post a found item</button>
+        </div>
+        <div class="app-toolbar">
+          <label class="search-field"
+            ><span>Search listings</span
+            ><input
+              id="search"
+              type="search"
+              placeholder="Try backpack, library, or keys"
+              maxlength="120" /></label
+          ><label class="student-field"
+            ><span>Act as sample student</span
+            ><select id="student">
+              <option value="maya">Maya</option>
+              <option value="jordan">Jordan</option>
+            </select></label
+          ><label
+            ><span>Status</span
+            ><select id="status">
+              <option value="all">All items</option>
+              <option value="found">Found</option>
+              <option value="returned">Returned</option>
+            </select></label
+          ><button id="trace-search" class="secondary">
+            Trace this search
+          </button>
+        </div>
+        <p id="app-message" class="app-message" role="status"></p>
+        <div
+          id="listings"
+          class="listings"
+          aria-label="Lost-and-found listings"
+        ></div>
+        <div class="data-footer">
+          <span id="result-count"></span
+          ><button
+            id="inspect-toggle"
+            aria-expanded="false"
+            aria-controls="data-inspector"
+          >
+            Peek at the stored data <span aria-hidden="true">↗</span></button
+          ><button id="reset-data">Reset sample data</button>
+        </div>
+        <section
+          id="data-inspector"
+          hidden
+          aria-label="Simulated database and file storage"
+        >
+          <div>
+            <h3>Database: listing records</h3>
+            <p>Structured facts and photo references.</p>
+            <pre id="record-data"></pre>
+          </div>
+          <div>
+            <h3>File storage: photos</h3>
+            <p>Separate files, addressed by reference.</p>
+            <ul id="file-data"></ul>
+          </div>
+        </section>
+      </section>
+      <section class="takeaways" aria-label="Design decisions">
+        <p class="eyebrow">THREE CHOICES TO DISCUSS</p>
+        <div>
+          <article>
+            <span>01</span>
+            <h3>Photos outside the records</h3>
+            <p>
+              Keep structured information small. Coordinate each record with its
+              photo reference.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>One backend to start</h3>
+            <p>
+              Fewer moving parts for a small app. Split responsibilities further
+              when there is a reason.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Basic search first</h3>
+            <p>
+              A simple text match works for this example. Add more powerful
+              search when requirements justify it.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <span>Whiteboard Warriors #2 · ColorStack Rutgers–Newark</span>
+      <p>
+        This is a teaching simulation, not a campus reporting service. Student
+        switching is not authentication. A real backend must verify signed-in
+        identity and permissions.
+      </p>
+    </footer>
+    <dialog id="post-dialog" aria-labelledby="post-title">
+      <form id="post-form">
+        <div class="dialog-heading">
+          <div>
+            <p class="eyebrow">POST AS <span id="post-person">MAYA</span></p>
+            <h2 id="post-title">Found something?</h2>
+          </div>
+          <button
+            type="button"
+            id="close-post"
+            class="icon-button"
+            aria-label="Close form"
+          >
+            ×
+          </button>
+        </div>
+        <label
+          >Item name<input
+            name="title"
+            required
+            minlength="3"
+            maxlength="80"
+            placeholder="Blue backpack" /></label
+        ><label
+          >Description<textarea
+            name="description"
+            required
+            minlength="5"
+            maxlength="400"
+            rows="3"
+            placeholder="What does it look like?"
+          ></textarea>
+        </label>
+        <div class="form-row">
+          <label
+            >Category<select name="category">
+              <option>Bags</option>
+              <option>Bottles</option>
+              <option>Keys</option>
+              <option>Electronics</option>
+              <option>Other</option>
+            </select></label
+          ><label
+            >Found near<input
+              name="location"
+              required
+              minlength="2"
+              maxlength="80"
+              placeholder="Campus courtyard"
+          /></label>
+        </div>
+        <label
+          >Photo<input
+            id="photo-upload"
+            name="photo"
+            type="file"
+            accept="image/png,image/jpeg,image/webp"
+        /></label>
+        <p class="form-help">
+          PNG, JPEG, or WebP, up to 2 MB. Without an upload, the demo uses the
+          labeled backpack illustration.
+        </p>
+        <p id="form-error" class="form-error" role="alert"></p>
+        <button class="primary" type="submit">
+          Save item + trace the flow <span aria-hidden="true">→</span>
+        </button>
+      </form>
+    </dialog>
+    <dialog id="reset-dialog" aria-labelledby="reset-title">
+      <h2 id="reset-title">Reset this teaching demo?</h2>
+      <p class="form-help">
+        This removes added demo items and uploaded photos from this browser and
+        restores the three sample listings.
+      </p>
+      <div class="reset-actions">
+        <button id="cancel-reset" class="secondary">Keep my demo data</button
+        ><button id="confirm-reset" class="primary">Reset sample data</button>
+      </div>
+    </dialog>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
